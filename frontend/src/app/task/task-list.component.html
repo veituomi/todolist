@@ -1,3 +1,14 @@
-<ng-template ngFor let-task [ngForOf]="tasks">
-	<app-task-item [task]="task" />
+<mat-slide-toggle [(ngModel)]="allowDelete">Poista tehtäviä</mat-slide-toggle>
+
+<ng-template ngFor let-task let-i="index" [ngForOf]="tasks">
+	<div>
+		<button
+				*ngIf="allowDelete"
+				mat-button
+				(click)="deleteTask(i)">
+			<mat-icon>delete</mat-icon>
+			Poista
+		</button>
+		<app-task-item [task]="task" />
+	</div>
 </ng-template>

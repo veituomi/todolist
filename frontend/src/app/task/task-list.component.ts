@@ -9,7 +9,9 @@ import { Observable } from 'rxjs';
 export class TaskListComponent {
 
 	@Input()
-	addListener?: Observable<void>;
+	taskAddListener?: Observable<void>;
+
+	allowDelete = false;
 
 	tasks: Task[] = [
 		{
@@ -21,7 +23,7 @@ export class TaskListComponent {
 			title: 'Tehtävien lisääminen',
 		},
 		{
-			completed: false,
+			completed: true,
 			title: 'Tehtävien poistaminen',
 		},
 		{
@@ -30,14 +32,25 @@ export class TaskListComponent {
 		}
 	];
 
+	private runningIndex = 1;
+
 	ngOnInit() {
-		this.addListener?.subscribe(() => {
+		this.taskAddListener?.subscribe(() => {
 			const newTask: Task = {
 				completed: false,
-				title: `Tehtävä ${this.tasks.length + 1}`,
+				title: `Uusi tehtävä ${this.runningIndex}`,
 			};
+			this.runningIndex += 1;
 			this.tasks = [...this.tasks, newTask];
 		});
+	}
+
+	deleteTask(index: number) {
+		this.tasks = this.tasks.filter((_, i) => i !== index);
+
+		if (this.tasks.length === 0) {
+			this.allowDelete = false;
+		}
 	}
 
 }
