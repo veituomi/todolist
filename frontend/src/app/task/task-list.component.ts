@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Task } from '../model';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
+import { TaskService } from './task.service';
 
 @Component({
 	selector: 'app-task-list',
@@ -13,36 +14,29 @@ export class TaskListComponent {
 
 	allowDelete = false;
 
-	tasks: Task[] = [
-		{
-			completed: true,
-			title: 'Tehtävien listaus',
-		},
-		{
-			completed: true,
-			title: 'Tehtävien lisääminen',
-		},
-		{
-			completed: true,
-			title: 'Tehtävien poistaminen',
-		},
-		{
-			completed: false,
-			title: 'Tilan säilyttäminen',
-		}
-	];
+	tasks: Task[] = [];
 
 	private runningIndex = 1;
 
+	constructor(
+		private taskService: TaskService,
+	) {}
+
 	ngOnInit() {
-		this.taskAddListener?.subscribe(() => {
-			const newTask: Task = {
-				completed: false,
-				title: `Uusi tehtävä ${this.runningIndex}`,
-			};
-			this.runningIndex += 1;
-			this.tasks = [...this.tasks, newTask];
-		});
+		this.taskAddListener?.subscribe(() => this.addTask());
+
+		void this.loadState();
+	}
+
+	addTask() {
+		const newTask: Task = {
+			completed: false,
+			title: `Uusi tehtävä ${this.runningIndex}`,
+		};
+		this.runningIndex += 1;
+		this.tasks = [...this.tasks, newTask];
+
+		void this.saveState();
 	}
 
 	deleteTask(index: number) {
@@ -51,6 +45,16 @@ export class TaskListComponent {
 		if (this.tasks.length === 0) {
 			this.allowDelete = false;
 		}
+
+		void this.saveState();
+	}
+
+	private async loadState() {
+		this.tasks = await firstValueFrom(this.taskService.fetchTasks());
+	}
+
+	private async saveState() {
+		await firstValueFrom(this.taskService.saveTasks(this.tasks));
 	}
 
 }
