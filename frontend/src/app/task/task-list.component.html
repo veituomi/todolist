@@ -1,7 +1,9 @@
 <mat-slide-toggle [(ngModel)]="allowDelete">Poista tehtäviä</mat-slide-toggle>
 
+<mat-divider />
+
 <ng-template ngFor let-task let-i="index" [ngForOf]="tasks">
-	<div>
+	<div class="task-list-item">
 		<button
 				*ngIf="allowDelete"
 				mat-button

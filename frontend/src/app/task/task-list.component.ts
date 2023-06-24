@@ -5,12 +5,13 @@ import { TaskService } from './task.service';
 
 @Component({
 	selector: 'app-task-list',
+	styleUrls: ['./task-list.component.scss'],
 	templateUrl: './task-list.component.html',
 })
 export class TaskListComponent {
 
 	@Input()
-	taskAddListener?: Observable<void>;
+	taskAddListener?: Observable<string>;
 
 	allowDelete = false;
 
@@ -23,15 +24,15 @@ export class TaskListComponent {
 	) {}
 
 	ngOnInit() {
-		this.taskAddListener?.subscribe(() => this.addTask());
+		this.taskAddListener?.subscribe(title => this.addTask(title));
 
 		void this.loadState();
 	}
 
-	addTask() {
+	addTask(title: string) {
 		const newTask: Task = {
 			completed: false,
-			title: `Uusi tehtävä ${this.runningIndex}`,
+			title,
 		};
 		this.runningIndex += 1;
 		this.tasks = [...this.tasks, newTask];

@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 import {
 	MAT_FORM_FIELD_DEFAULT_OPTIONS,
 	MatFormFieldModule,
@@ -17,6 +18,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 		MatCardModule,
 		MatCheckboxModule,
 		MatDialogModule,
+		MatDividerModule,
 		MatFormFieldModule,
 		MatIconModule,
 		MatInputModule,
@@ -27,6 +29,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 		MatCardModule,
 		MatCheckboxModule,
 		MatDialogModule,
+		MatDividerModule,
 		MatFormFieldModule,
 		MatIconModule,
 		MatInputModule,
