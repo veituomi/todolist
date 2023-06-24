@@ -9,8 +9,20 @@ export class TaskListComponent {
 
 	tasks: Task[] = [
 		{
+			completed: true,
+			title: 'Tehtävien listaus',
+		},
+		{
 			completed: false,
-			title: 'Tehtävä',
+			title: 'Tehtävien lisääminen',
+		},
+		{
+			completed: false,
+			title: 'Tehtävien poistaminen',
+		},
+		{
+			completed: false,
+			title: 'Tilan säilyttäminen',
 		}
 	];
 
