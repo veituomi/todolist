@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import {
 	MAT_FORM_FIELD_DEFAULT_OPTIONS,
@@ -13,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 	exports: [
 		MatButtonModule,
 		MatCardModule,
+		MatCheckboxModule,
 		MatDialogModule,
 		MatFormFieldModule,
 		MatIconModule,
@@ -21,6 +23,7 @@ import { MatInputModule } from '@angular/material/input';
 	imports: [
 		MatButtonModule,
 		MatCardModule,
+		MatCheckboxModule,
 		MatDialogModule,
 		MatFormFieldModule,
 		MatIconModule,
