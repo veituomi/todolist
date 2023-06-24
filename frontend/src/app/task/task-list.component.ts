@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Task } from '../model';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-task-list',
@@ -7,13 +8,16 @@ import { Task } from '../model';
 })
 export class TaskListComponent {
 
+	@Input()
+	addListener?: Observable<void>;
+
 	tasks: Task[] = [
 		{
 			completed: true,
 			title: 'Tehtävien listaus',
 		},
 		{
-			completed: false,
+			completed: true,
 			title: 'Tehtävien lisääminen',
 		},
 		{
@@ -25,5 +29,15 @@ export class TaskListComponent {
 			title: 'Tilan säilyttäminen',
 		}
 	];
+
+	ngOnInit() {
+		this.addListener?.subscribe(() => {
+			const newTask: Task = {
+				completed: false,
+				title: `Tehtävä ${this.tasks.length + 1}`,
+			};
+			this.tasks = [...this.tasks, newTask];
+		});
+	}
 
 }

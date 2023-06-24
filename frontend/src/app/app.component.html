@@ -3,6 +3,15 @@
 		<h1>Tehtävälista</h1>
 	</mat-card-title>
 	<mat-card-content>
-		<app-task-list />
+		<app-task-list [addListener]="addTask" />
 	</mat-card-content>
+	<mat-card-actions>
+		<button
+				mat-button
+				(click)="addTask.next()"
+				type="button">
+			<mat-icon>add</mat-icon>
+			Lisää tehtävä
+		</button>
+	</mat-card-actions>
 </mat-card>
