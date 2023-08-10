@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Task } from '../model';
 
 @Component({
@@ -11,5 +11,8 @@ export class TaskItemComponent {
 		required: true
 	})
 	task!: Task;
+
+	@Output()
+	updateState = new EventEmitter<void>();
 
 }

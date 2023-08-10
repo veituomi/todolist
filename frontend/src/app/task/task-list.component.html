@@ -11,6 +11,8 @@
 			<mat-icon>delete</mat-icon>
 			Poista
 		</button>
-		<app-task-item [task]="task" />
+		<app-task-item
+				[task]="task"
+				(updateState)="updateTasks()" />
 	</div>
 </ng-template>

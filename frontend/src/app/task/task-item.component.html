@@ -1,3 +1,5 @@
 <div>
-	<mat-checkbox [checked]="task.completed">{{ task.title }}</mat-checkbox>
+	<mat-checkbox
+			[(ngModel)]="task.completed"
+			(ngModelChange)="updateState.emit()">{{ task.title }}</mat-checkbox>
 </div>

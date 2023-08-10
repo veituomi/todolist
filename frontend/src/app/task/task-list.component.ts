@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Task } from '../model';
 import { Observable, firstValueFrom } from 'rxjs';
+import { Task } from '../model';
 import { TaskService } from './task.service';
 
 @Component({
@@ -37,6 +37,10 @@ export class TaskListComponent {
 		this.runningIndex += 1;
 		this.tasks = [...this.tasks, newTask];
 
+		void this.saveState();
+	}
+
+	updateTasks() {
 		void this.saveState();
 	}
 
