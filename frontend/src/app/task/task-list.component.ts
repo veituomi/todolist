@@ -1,5 +1,5 @@
 import { Component, inject, Input } from '@angular/core';
-import { firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom, Observable, Subscription } from 'rxjs';
 import { Task } from '../model';
 import { TaskService } from './task.service';
 
@@ -17,12 +17,21 @@ export class TaskListComponent {
 
 	tasks: Task[] = [];
 
+	private changeListener!: Subscription;
+
 	private taskService = inject(TaskService);
 
 	ngOnInit() {
 		this.taskAddListener?.subscribe(title => this.addTask(title));
 
 		void this.loadState();
+
+		this.changeListener = this.taskService.hasChanges()
+			.subscribe(() => void this.loadState())
+	}
+
+	ngOnDestroy() {
+		this.changeListener?.unsubscribe();
 	}
 
 	async addTask(title: string) {
@@ -33,17 +42,14 @@ export class TaskListComponent {
 		};
 
 		await firstValueFrom(this.taskService.addTask(newTask));
-		await this.loadState();
 	}
 
 	async updateTask(task: Task) {
 		await firstValueFrom(this.taskService.updateTask(task));
-		await this.loadState();
 	}
 
 	async deleteTask(task: Task) {
 		await firstValueFrom(this.taskService.removeTask(task));
-		await this.loadState();
 	}
 
 	private async loadState() {

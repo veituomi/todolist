@@ -1,8 +1,10 @@
 import express from 'express';
+import { firstValueFrom, map, race, skipWhile, timer } from 'rxjs';
 import { TaskRepository } from './task-repository';
 
 const app = express();
 const port = 3000;
+const longPollMs = 10_000;
 
 app.use(express.json());
 
@@ -22,6 +24,16 @@ app.post('/task', (req, res) => {
 
 app.delete('/task/:id', (req, res) => {
 	res.send(tasks.remove(Number(req.params.id)));
+});
+
+app.get('/task/changes/:changeId', (req, res) => {
+	const changeId = Number(req.params.changeId);
+	const longPollTimer = timer(longPollMs).pipe(map(() => 0));
+	const update = tasks.updates.pipe(
+		skipWhile(id => id <= changeId),
+	);
+	firstValueFrom(race(longPollTimer, update))
+		.then((updateOrExpiration) => res.send(JSON.stringify(updateOrExpiration)))
 });
 
 app.listen(port, () => {

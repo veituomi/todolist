@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { filter, map, Observable, of, repeat, retry, switchMap } from 'rxjs';
 import { Task } from '../model';
 
 @Injectable({
@@ -24,6 +24,24 @@ export class TaskService {
 
 	removeTask(task: Task): Observable<void> {
 		return this.httpClient.delete<void>('/api/task/' + task.id);
+	}
+
+	hasChanges(): Observable<boolean> {
+		let lastUpdate = 0;
+		return of(undefined)
+			.pipe(
+				switchMap(() => this.httpClient.get<number>('/api/task/changes/' + lastUpdate)),
+				repeat({ delay: 1_000 }),
+				retry({ delay: 1_000 }),
+				filter(update => {
+					const hasUpdate = update > lastUpdate;
+					if (hasUpdate) {
+						lastUpdate = update;
+					}
+					return hasUpdate;
+				}),
+				map(() => true),
+			);
 	}
 
 }
