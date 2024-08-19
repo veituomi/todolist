@@ -53,7 +53,17 @@ export class TaskListComponent {
 	}
 
 	private async loadState() {
-		this.tasks = await firstValueFrom(this.taskService.fetchTasks());
+		const tasks = await firstValueFrom(this.taskService.fetchTasks());
+		this.tasks = tasks.map(task => {
+			const existingLocalTask = this.tasks.find(t => t.id === task.id);
+			if (!existingLocalTask) {
+				return task;
+			} else {
+				existingLocalTask.completed = task.completed;
+				existingLocalTask.title = task.title;
+				return existingLocalTask;
+			}
+		});
 	}
 
 }
