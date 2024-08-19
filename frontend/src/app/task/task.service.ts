@@ -1,20 +1,29 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Task } from '../model';
-import { Observable, of } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TaskService {
 
-	fetchTasks(): Observable<Task[]> {
-		return of(JSON.parse(localStorage.getItem('tasks') || '[]'));
+	private httpClient = inject(HttpClient);
+
+	addTask(task: Task): Observable<void> {
+		return this.httpClient.put<void>('/api/task', task);
 	}
 
-	saveTasks(tasks: Task[]): Observable<boolean> {
-		localStorage.setItem('tasks', JSON.stringify(tasks));
-		return of(true);
+	fetchTasks(): Observable<Task[]> {
+		return this.httpClient.get<Task[]>('/api/task');
+	}
+
+	updateTask(task: Task): Observable<void> {
+		return this.httpClient.post<void>('/api/task', task);
+	}
+
+	removeTask(task: Task): Observable<void> {
+		return this.httpClient.delete<void>('/api/task/' + task.id);
 	}
 
 }

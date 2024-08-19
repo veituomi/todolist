@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 import { TaskItemComponent } from './task/task-item.component';
 import { TaskListComponent } from './task/task-list.component';
-import { FormsModule } from '@angular/forms';
 
 @NgModule({
 	declarations: [
@@ -18,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 		BrowserModule,
 		BrowserAnimationsModule,
 		FormsModule,
+		HttpClientModule,
 		MaterialModule,
 	],
 	providers: [],

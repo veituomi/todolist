@@ -1,5 +1,5 @@
 <div>
 	<mat-checkbox
 			[(ngModel)]="task.completed"
-			(ngModelChange)="updateState.emit()">{{ task.title }}</mat-checkbox>
+			(ngModelChange)="updateState.emit(task)">{{ task.title }}</mat-checkbox>
 </div>

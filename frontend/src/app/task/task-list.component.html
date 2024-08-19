@@ -7,12 +7,12 @@
 		<button
 				*ngIf="allowDelete"
 				mat-button
-				(click)="deleteTask(i)">
+				(click)="deleteTask(task)">
 			<mat-icon>delete</mat-icon>
 			Poista
 		</button>
 		<app-task-item
 				[task]="task"
-				(updateState)="updateTasks()" />
+				(updateState)="updateTask($event)" />
 	</div>
 </ng-template>

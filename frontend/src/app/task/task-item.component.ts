@@ -13,6 +13,6 @@ export class TaskItemComponent {
 	task!: Task;
 
 	@Output()
-	updateState = new EventEmitter<void>();
+	updateState = new EventEmitter<Task>();
 
 }

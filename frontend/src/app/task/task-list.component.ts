@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { Observable, firstValueFrom } from 'rxjs';
+import { Component, inject, Input } from '@angular/core';
+import { firstValueFrom, Observable } from 'rxjs';
 import { Task } from '../model';
 import { TaskService } from './task.service';
 
@@ -17,11 +17,7 @@ export class TaskListComponent {
 
 	tasks: Task[] = [];
 
-	private runningIndex = 1;
-
-	constructor(
-		private taskService: TaskService,
-	) {}
+	private taskService = inject(TaskService);
 
 	ngOnInit() {
 		this.taskAddListener?.subscribe(title => this.addTask(title));
@@ -29,37 +25,29 @@ export class TaskListComponent {
 		void this.loadState();
 	}
 
-	addTask(title: string) {
+	async addTask(title: string) {
 		const newTask: Task = {
+			id: 0,
 			completed: false,
 			title,
 		};
-		this.runningIndex += 1;
-		this.tasks = [...this.tasks, newTask];
 
-		void this.saveState();
+		await firstValueFrom(this.taskService.addTask(newTask));
+		await this.loadState();
 	}
 
-	updateTasks() {
-		void this.saveState();
+	async updateTask(task: Task) {
+		await firstValueFrom(this.taskService.updateTask(task));
+		await this.loadState();
 	}
 
-	deleteTask(index: number) {
-		this.tasks = this.tasks.filter((_, i) => i !== index);
-
-		if (this.tasks.length === 0) {
-			this.allowDelete = false;
-		}
-
-		void this.saveState();
+	async deleteTask(task: Task) {
+		await firstValueFrom(this.taskService.removeTask(task));
+		await this.loadState();
 	}
 
 	private async loadState() {
 		this.tasks = await firstValueFrom(this.taskService.fetchTasks());
-	}
-
-	private async saveState() {
-		await firstValueFrom(this.taskService.saveTasks(this.tasks));
 	}
 
 }
