@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import { firstValueFrom, map, race, skipWhile, timer } from 'rxjs';
 import { TaskRepository } from './task-repository';
 
@@ -7,26 +8,27 @@ const port = 3000;
 const longPollMs = 10_000;
 
 app.use(express.json());
+app.use(express.static(path.resolve(process.cwd(), 'static')));
 
 const tasks = new TaskRepository();
 
-app.put('/task', (req, res) => {
+app.put('/api/task', (req, res) => {
 	res.send(tasks.create(req.body));
 });
 
-app.get('/task', (req, res) => {
+app.get('/api/task', (req, res) => {
 	res.send(tasks.getAll());
 });
 
-app.post('/task', (req, res) => {
+app.post('/api/task', (req, res) => {
 	res.send(tasks.update(req.body));
 });
 
-app.delete('/task/:id', (req, res) => {
+app.delete('/api/task/:id', (req, res) => {
 	res.send(tasks.remove(Number(req.params.id)));
 });
 
-app.get('/task/changes/:changeId', (req, res) => {
+app.get('/api/task/changes/:changeId', (req, res) => {
 	const changeId = Number(req.params.changeId);
 	const longPollTimer = timer(longPollMs).pipe(map(() => 0));
 	const update = tasks.updates.pipe(

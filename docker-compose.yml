@@ -1,0 +1,6 @@
+version: '2.4'
+services:
+  application:
+    image: todolist
+    ports:
+      - 127.0.0.1:8888:3000
